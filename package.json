@@ -1,0 +1,34 @@
+{
+  "name": "miniprogrammatrix",
+  "version": "1.0.0",
+  "description": "Miniprogrammatrix is a scaffold that helps build multiple miniprograms",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hendiko/miniprogrammatrix.git"
+  },
+  "keywords": [
+    "miniprogram",
+    "scaffold"
+  ],
+  "author": "Xavier Yin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hendiko/miniprogrammatrix/issues"
+  },
+  "homepage": "https://github.com/hendiko/miniprogrammatrix#readme",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.4.0",
+    "webpack": "^4.25.1"
+  },
+  "devDependencies": {
+    "@types/gulp": "^4.0.5",
+    "@types/gulp-rename": "0.0.33",
+    "@types/node": "^7.10.2",
+    "@types/webpack": "^4.4.19"
+  }
+}
