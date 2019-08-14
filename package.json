@@ -1,8 +1,8 @@
 {
   "name": "miniprogrammatrix",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "为多个微信小程序构建公共组件以及外部依赖。",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
