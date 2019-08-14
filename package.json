@@ -1,6 +1,6 @@
 {
   "name": "miniprogrammatrix",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "为多个微信小程序构建公共组件以及外部依赖。",
   "main": "index.js",
   "scripts": {
@@ -17,10 +17,11 @@
   "author": "Xavier Yin",
   "license": "MIT",
   "files": [
-    "src/**/*"
+    "src",
+    "bin"
   ],
   "bin": {
-    "mpmatrix": "./bin/index"
+    "mpmatrix": "./bin/index.js"
   },
   "bugs": {
     "url": "https://github.com/hendiko/miniprogrammatrix/issues"
