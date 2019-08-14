@@ -1,0 +1,12 @@
+{
+  "name": "miniprogrammatrix-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "matrix.config.js",
+  "scripts": {
+    "init": "mpmatrix init",
+    "build": "mpmatrix build"
+  },
+  "author": "",
+  "license": "ISC"
+}
