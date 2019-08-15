@@ -1,6 +1,6 @@
 {
   "name": "miniprogrammatrix",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "为多个微信小程序构建公共组件以及外部依赖。",
   "main": "src/index.js",
   "scripts": {
