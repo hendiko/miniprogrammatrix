@@ -28,7 +28,7 @@ function findComponents(components, result = []) {
 
 /** 复制依赖的公共组件到指定目录 */
 function copyComponents(app) {
-  let { miniprogram, external } = app;
+  let { external } = app;
   let { components } = external;
   let { src, dest, using = [] } = components;
 
