@@ -2,7 +2,7 @@
  * @Author: Xavier Yin
  * @Date: 2019-08-06 14:54:35
  * @Last Modified by: Xavier Yin
- * @Last Modified time: 2019-08-14 17:13:06
+ * @Last Modified time: 2019-08-15 09:29:00
  */
 
 const path = require("path");
@@ -53,13 +53,18 @@ function buildDependencies(config) {
   let root = absPath(config.fileDir, config.miniprogram.root || ".");
   let { src, dest } = config.miniprogram.dependency;
   let { alias, dir } = config.external.libs;
-  return packDepsJs(
-    root,
-    src,
-    dest,
-    alias,
-    absPath(config.fileDir, dir || ".")
-  );
+  if (src) {
+    return packDepsJs(
+      root,
+      src,
+      dest,
+      alias,
+      absPath(config.fileDir, dir || ".")
+    );
+  } else {
+    console.log("没有指定依赖入口文件，终止构建依赖文件任务。");
+    return Promise.resolve();
+  }
 }
 
 /**
@@ -75,7 +80,8 @@ function buildAssets(config) {
       absPath(config.fileDir, output)
     );
   } else {
-    return Promise.reject("没有指定静态资源输出目录");
+    console.log("没有指定静态资源输出目录，终止输出静态资源任务。");
+    return Promise.resolve();
   }
 }
 
@@ -84,7 +90,12 @@ function buildAssets(config) {
  * @param {AppConfig} config 配置对象
  */
 function buildComponents(config) {
-  return copyComponents(config);
+  if (config.external.components) {
+    return copyComponents(config);
+  } else {
+    console.log("没有指定公共组件，终止构建公共组件任务。");
+    return Promise.resolve();
+  }
 }
 
 /**
@@ -141,12 +152,12 @@ function main() {
             default: [0, 1, 2],
             type: "array",
             describe:
-              "构建任务\n0 - 生成依赖文件; \n1 - 复制公共组件; \n2 - 输出静态资源文件."
+              "指定构建任务，默认全选。\n0 - 生成依赖文件\n1 - 复制公共组件\n2 - 输出静态资源文件"
           })
           .option("c", {
             alias: "config",
             type: "string",
-            describe: "配置文件路径"
+            describe: "指定配置文件路径"
           }),
       argv => {
         let { task, config, app } = argv;

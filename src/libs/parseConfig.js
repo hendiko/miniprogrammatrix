@@ -52,7 +52,7 @@ class MiniprogramField {
 
   get dependency() {
     let { dependency } = this.miniprogram;
-    let { src = ".deps", dest = "" } = dependency || {};
+    let { src = "", dest = "" } = dependency || {};
     return { src, dest };
   }
 

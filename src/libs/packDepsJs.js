@@ -2,7 +2,7 @@
  * @Author: Xavier Yin
  * @Date: 2019-08-06 15:23:13
  * @Last Modified by: Xavier Yin
- * @Last Modified time: 2019-08-14 16:44:54
+ * @Last Modified time: 2019-08-14 18:05:35
  */
 
 const webpack = require("webpack");
@@ -10,7 +10,6 @@ const fs = require("fs");
 const path = require("path");
 
 function getDepFileNames(src, dest) {
-  if (!src) src = ".deps";
   if (!src.endsWith(".js")) src += ".js";
   if (!dest) {
     dest = src.replace(/\.js$/, ".matrix.js");
