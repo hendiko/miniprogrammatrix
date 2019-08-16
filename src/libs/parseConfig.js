@@ -1,4 +1,5 @@
 const path = require("path");
+const _ = require("lodash");
 
 class MatrixConfig {
   constructor(config, filePath) {
@@ -11,8 +12,12 @@ class MatrixConfig {
     let { globals, apps } = this.config;
     let app = apps ? apps[appName] : null;
     if (app) {
-      let { miniprogram, external } = app;
-      external = Object.assign({}, globals, external);
+      let { miniprogram } = app;
+      let external = Object.assign(
+        {},
+        globals,
+        _.pick(app, ["libs", "assets", "components"])
+      );
       if (miniprogram) {
         return new AppConfig(miniprogram, external, this.filePath);
       } else {
@@ -51,9 +56,14 @@ class MiniprogramField {
   }
 
   get dependency() {
-    let { dependency } = this.miniprogram;
-    let { src = "", dest = "" } = dependency || {};
+    let { deps } = this.miniprogram;
+    let { src = "", dest = "" } = deps || {};
     return { src, dest };
+  }
+
+  get componentsDir() {
+    let { componentsDir } = this.miniprogram;
+    return path.join(this.root, componentsDir || "");
   }
 
   toJSON() {
@@ -81,10 +91,12 @@ class ExternalField {
   }
 
   get components() {
-    let { src, dest, using = [] } = this.external.components || {};
+    let dest = this.app.miniprogram.componentsDir;
+    let { dir: src, using = [] } = this.external.components || {};
     if (using.length) {
-      if (!src) src = "./components";
-      dest = path.join(this.app.miniprogram.root, dest || "");
+      if (!src) {
+        throw new Error("未指定公共组件目录");
+      }
       return { src, dest, using };
     } else {
       return null;

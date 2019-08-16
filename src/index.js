@@ -2,7 +2,7 @@
  * @Author: Xavier Yin
  * @Date: 2019-08-06 14:54:35
  * @Last Modified by: Xavier Yin
- * @Last Modified time: 2019-08-15 09:29:00
+ * @Last Modified time: 2019-08-16 14:51:20
  */
 
 const path = require("path");
@@ -15,6 +15,7 @@ const { MatrixConfig } = require("./libs/parseConfig");
 const { copyAssets } = require("./libs/copyAssets");
 const { copyComponents } = require("./libs/copyComponents");
 const { copyMatrixConfig } = require("./libs/copyMatrixConfig");
+const { logging, erroring } = require("./libs/utils");
 
 const absPath = (config, name) => path.resolve(config, name);
 
@@ -62,7 +63,7 @@ function buildDependencies(config) {
       absPath(config.fileDir, dir || ".")
     );
   } else {
-    console.log("没有指定依赖入口文件，终止构建依赖文件任务。");
+    logging("没有指定依赖入口文件，终止构建依赖文件任务。");
     return Promise.resolve();
   }
 }
@@ -80,7 +81,7 @@ function buildAssets(config) {
       absPath(config.fileDir, output)
     );
   } else {
-    console.log("没有指定静态资源输出目录，终止输出静态资源任务。");
+    logging("没有指定静态资源输出目录，终止输出静态资源任务。");
     return Promise.resolve();
   }
 }
@@ -93,7 +94,7 @@ function buildComponents(config) {
   if (config.external.components) {
     return copyComponents(config);
   } else {
-    console.log("没有指定公共组件，终止构建公共组件任务。");
+    logging("没有指定公共组件，终止构建公共组件任务。");
     return Promise.resolve();
   }
 }
@@ -108,18 +109,25 @@ async function executeTask(config, app, task) {
   try {
     let matrix = await readMatrixConfig(config);
     let appConfig = matrix.getConfig(app);
-
+    logging("开始任务...\n");
     if (task.includes(0)) {
+      logging("开始生成依赖文件...");
       await buildDependencies(appConfig);
+      logging("依赖文件生成完毕\n");
     }
     if (task.includes(1)) {
+      logging("开始复制公共组件...");
       await buildComponents(appConfig);
+      logging("公共组件复制完毕\n");
     }
     if (task.includes(2)) {
+      logging("开始复制静态资源...");
       await buildAssets(appConfig);
+      logging("静态资源复制完毕\n");
     }
+    logging("任务执行完毕。");
   } catch (e) {
-    console.error("[Matrix Build Error]\n", e);
+    erroring("[Matrix Build Error]\n", e);
   }
 }
 
@@ -170,4 +178,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { main };
+module.exports = { main, executeTask };

@@ -2,19 +2,21 @@
  * @Author: Xavier Yin
  * @Date: 2019-08-06 15:23:13
  * @Last Modified by: Xavier Yin
- * @Last Modified time: 2019-08-14 18:05:35
+ * @Last Modified time: 2019-08-16 14:37:54
  */
 
 const webpack = require("webpack");
 const fs = require("fs");
 const path = require("path");
 
+const { erroring, warning } = require("./utils");
+
 function getDepFileNames(src, dest) {
   if (!src.endsWith(".js")) src += ".js";
   if (!dest) {
     dest = src.replace(/\.js$/, ".matrix.js");
   }
-  dest = dest.replace(/(^|\/)(\.+)/g, "$1");
+  // 因此此处将不再修改隐藏目录，如果缺省，则使用  deps.matrix.js 作为默认值。
   if (!dest.endsWith(".js")) dest += ".js";
   return { src, dest };
 }
@@ -47,6 +49,7 @@ function packDepsJs(
         webpack(
           {
             entry: depSrcPath,
+            mode: "none",
             output: {
               path: srcRoot,
               filename: depDest,
@@ -75,13 +78,26 @@ function packDepsJs(
                 }
               : {}
           },
-          (err, status) => {
+          (err, stats) => {
             if (err) {
-              reject(err);
-            } else {
-              // console.log(status);
-              resolve(status);
+              erroring(err.stack || err);
+              if (err.details) {
+                erroring(err.details);
+              }
+              reject();
             }
+
+            const info = stats.toJson();
+
+            if (stats.hasErrors()) {
+              erroring(info.errors.join("\n"));
+            }
+
+            if (stats.hasWarnings()) {
+              warning(info.warnings.join("\n"));
+            }
+
+            resolve();
           }
         );
       } else {

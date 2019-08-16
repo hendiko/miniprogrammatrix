@@ -19,12 +19,27 @@ module.exports = {
     },
     // 公共组件
     components: {
-      src: "",
+      dir: "",
       // 公共组件位于小程序中的相对路径目录
-      dest: "",
       using: []
     }
   },
 
-  apps: {}
+  apps: {
+    // 小程序ID(自定义ID作为小程序在 mpmatrix 中的唯一标识)
+    yourapp: {
+      miniprogram: {
+        // 小程序源代码根路径
+        root: "",
+        deps: {
+          // 导入外部依赖的入口文件路径
+          src: "",
+          // 外部依赖编译后输出文件路径
+          dest: ""
+        },
+        // 存放公共组件的目录路径
+        componentsDir: ""
+      }
+    }
+  }
 };
